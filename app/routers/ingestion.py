@@ -71,7 +71,6 @@ def _to_date_safe(s: str):
     ts = pd.to_datetime(s, errors="coerce")  # -> Timestamp o NaT
     if pd.isna(ts):
         return None
-    # si viene Timestamp/datetime:
     try:
         return ts.date() if hasattr(ts, "date") else None
     except Exception:
