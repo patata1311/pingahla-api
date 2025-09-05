@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from app.core.config import get_settings
 from app.routers import system
+from app.routers import ingestion
 from fastapi.responses import RedirectResponse
 
 tags_metadata = [
@@ -24,6 +25,12 @@ def create_app() -> FastAPI:
     def root():
         return RedirectResponse(url="/docs")
     app.include_router(system.router, prefix=settings.API_PREFIX)
+    app.include_router(ingestion.router, prefix=settings.API_PREFIX)
+    for r in app.routes:
+        try:
+            print("ROUTE:", r.path, list(getattr(r, "methods", [])))
+        except Exception:
+            pass
     return app
 
 app = create_app()
